@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  web:
+    container_name: odoo14
+    image: delsananthony/odoo14
+    restart: no
+    build:
+      context: .
+      target: build
+    depends_on:
+      - db
+    volumes:
+      - ./extra-addons:/mnt/extra-addons
+      - ./config:/etc/odoo
+    ports:
+      - "8069:8069"
+      - "5678:5678"
+  db:
+    container_name: odoo14-postres
+    image: postgres:alpine
+    restart: no
+    ports:
+      - "5533:5432"
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_USER=odoo
